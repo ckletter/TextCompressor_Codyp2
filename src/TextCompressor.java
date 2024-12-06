@@ -28,17 +28,56 @@
  *  @author Zach Blick, YOUR NAME HERE
  */
 public class TextCompressor {
-
+    public static final int CODE_LENGTH = 12;
+    public static final int RADIX = 128;
     private static void compress() {
-
-        // TODO: Complete the compress() method
-
+        String text = BinaryStdIn.readString();
+        int length = text.length();
+        int index = 0;
+        int maxCode = (int) Math.pow(2, CODE_LENGTH);
+        int nextCode = RADIX + 1;
+        TST prefixes = new TST();
+        // write out single character codes into TST
+        for (int i = 0; i < RADIX; i++) {
+            prefixes.insert(String.valueOf((char) i), i);
+        }
+        // linear pass through the text
+        while (index < length) {
+            String prefix = prefixes.getLongestPrefix(text, index);
+            int code = prefixes.lookup(prefix);
+            BinaryStdOut.write(code, CODE_LENGTH);
+            // lookahead to next character
+            String lookahead = text.substring(index, index + prefix.length() + 1);
+            if (nextCode <= maxCode) {
+                 prefixes.insert(lookahead, nextCode);
+                 nextCode++;
+            }
+            index += prefix.length();
+        }
         BinaryStdOut.close();
     }
 
     private static void expand() {
-
-        // TODO: Complete the expand() method
+        int nextCode = RADIX + 1;
+        // map for codes to prefixes
+        int maxCode = (int) Math.pow(2, CODE_LENGTH);
+        String[] prefixes = new String[maxCode];
+        // add ascii characters to map
+        for (int i = 0; i < 128; i++) {
+            prefixes[i] = String.valueOf((char) i);
+        }
+        // loop until no more codes to read
+        while (!BinaryStdIn.isEmpty()) {
+            int code = BinaryStdIn.readInt(CODE_LENGTH);
+            String prefix = prefixes[code];
+            BinaryStdOut.write(prefix);
+            int lookaheadCode = BinaryStdIn.readInt(CODE_LENGTH);
+            String lookaheadString = prefixes[lookaheadCode];
+            if (nextCode <= maxCode) {
+                prefixes[nextCode] = prefix + lookaheadString.charAt(0);
+                nextCode++;
+            }
+        }
 
         BinaryStdOut.close();
     }
