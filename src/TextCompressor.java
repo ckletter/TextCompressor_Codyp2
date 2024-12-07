@@ -46,9 +46,9 @@ public class TextCompressor {
             String prefix = prefixes.getLongestPrefix(text, index);
             int code = prefixes.lookup(prefix);
             BinaryStdOut.write(code, CODE_LENGTH);
-            // lookahead to next character
-            String lookahead = text.substring(index, index + prefix.length() + 1);
-            if (nextCode <= maxCode) {
+            // lookahead to next character if have available codes
+            if (nextCode <= maxCode && index + prefix.length() + 1 < length) {
+                String lookahead = text.substring(index, index + prefix.length() + 1);
                  prefixes.insert(lookahead, nextCode);
                  nextCode++;
             }
@@ -63,12 +63,12 @@ public class TextCompressor {
         int maxCode = (int) Math.pow(2, CODE_LENGTH);
         String[] prefixes = new String[maxCode];
         // add ascii characters to map
-        for (int i = 0; i < 128; i++) {
+        for (int i = 0; i < RADIX; i++) {
             prefixes[i] = String.valueOf((char) i);
         }
+        int code = BinaryStdIn.readInt(CODE_LENGTH);
         // loop until no more codes to read
         while (!BinaryStdIn.isEmpty()) {
-            int code = BinaryStdIn.readInt(CODE_LENGTH);
             String prefix = prefixes[code];
             BinaryStdOut.write(prefix);
             int lookaheadCode = BinaryStdIn.readInt(CODE_LENGTH);
@@ -77,8 +77,11 @@ public class TextCompressor {
                 prefixes[nextCode] = prefix + lookaheadString.charAt(0);
                 nextCode++;
             }
+            // set current code to what was previously our lookahead code
+            code = lookaheadCode;
         }
-
+        // write final code to expanded file
+        BinaryStdOut.write(prefixes[code]);
         BinaryStdOut.close();
     }
 
