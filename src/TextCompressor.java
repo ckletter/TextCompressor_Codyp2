@@ -25,16 +25,19 @@
  *  The {@code TextCompressor} class provides static methods for compressing
  *  and expanding natural language through textfile input.
  *
- *  @author Zach Blick, YOUR NAME HERE
+ *  @author Zach Blick, Cody Kletter
  */
 public class TextCompressor {
+    // constants
     public static final int CODE_LENGTH = 12;
-    public static final int RADIX = 128;
+    public static final int RADIX = 256;
     private static void compress() {
+        // read in the entire text
         String text = BinaryStdIn.readString();
         int length = text.length();
         int index = 0;
-        int maxCode = (int) Math.pow(2, CODE_LENGTH);
+        // calculate max codes available
+        int maxCode = (int) Math.pow(2, CODE_LENGTH) - 1;
         int nextCode = RADIX + 1;
         TST prefixes = new TST();
         // write out single character codes into TST
@@ -43,15 +46,19 @@ public class TextCompressor {
         }
         // linear pass through the text
         while (index < length) {
+            // find the longest prefix in our codebase from the current index
             String prefix = prefixes.getLongestPrefix(text, index);
+            // find the code associated with that prefix and write it out
             int code = prefixes.lookup(prefix);
             BinaryStdOut.write(code, CODE_LENGTH);
-            // lookahead to next character if have available codes
+            // lookahead to next character if have available codes and not out of bounds
             if (nextCode <= maxCode && index + prefix.length() + 1 < length) {
+                // go to our lookahead string and add it to our codebase, then increment our current code
                 String lookahead = text.substring(index, index + prefix.length() + 1);
-                 prefixes.insert(lookahead, nextCode);
-                 nextCode++;
+                prefixes.insert(lookahead, nextCode);
+                nextCode++;
             }
+            // move to next index in the text
             index += prefix.length();
         }
         BinaryStdOut.close();
@@ -61,18 +68,29 @@ public class TextCompressor {
         int nextCode = RADIX + 1;
         // map for codes to prefixes
         int maxCode = (int) Math.pow(2, CODE_LENGTH);
-        String[] prefixes = new String[maxCode];
+        String[] prefixes = new String[maxCode + 1];
         // add ascii characters to map
         for (int i = 0; i < RADIX; i++) {
             prefixes[i] = String.valueOf((char) i);
         }
+        // get initial code
         int code = BinaryStdIn.readInt(CODE_LENGTH);
         // loop until no more codes to read
         while (!BinaryStdIn.isEmpty()) {
             String prefix = prefixes[code];
             BinaryStdOut.write(prefix);
             int lookaheadCode = BinaryStdIn.readInt(CODE_LENGTH);
-            String lookaheadString = prefixes[lookaheadCode];
+            String lookaheadString;
+            // edge case, if lookahead code does not exist
+            if (prefixes[lookaheadCode] == null) {
+                lookaheadString = prefix + prefix.charAt(0);
+            }
+            // set our lookahead string to the next code written out
+            else {
+                lookaheadString = prefixes[lookaheadCode];
+            }
+            // if we still have codes available, add the next prefix to our map
+            // increment our current code to be added by one
             if (nextCode <= maxCode) {
                 prefixes[nextCode] = prefix + lookaheadString.charAt(0);
                 nextCode++;
