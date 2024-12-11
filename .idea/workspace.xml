@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c0fc687-5e81-4f2e-86c0-a00732202ab3" name="Changes" comment="expansion algorithm">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WORK_LOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/WORK_LOG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TextCompressor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TextCompressor.java" afterDir="false" />
-    </list>
+    <list default="true" id="4c0fc687-5e81-4f2e-86c0-a00732202ab3" name="Changes" comment="12/9 final attempt!" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -69,11 +64,29 @@
       <option name="project" value="LOCAL" />
       <updated>1733521232454</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="12/6 final attempt before edge cases">
+      <option name="closed" value="true" />
+      <created>1733544672889</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1733544672889</updated>
+    </task>
+    <task id="LOCAL-00003" summary="12/9 final attempt!">
+      <option name="closed" value="true" />
+      <created>1733774205998</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1733774205998</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="expansion algorithm" />
-    <option name="LAST_COMMIT_MESSAGE" value="expansion algorithm" />
+    <MESSAGE value="12/6 final attempt before edge cases" />
+    <MESSAGE value="12/9 final attempt!" />
+    <option name="LAST_COMMIT_MESSAGE" value="12/9 final attempt!" />
   </component>
 </project>

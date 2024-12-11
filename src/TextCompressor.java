@@ -31,6 +31,7 @@ public class TextCompressor {
     // constants
     public static final int CODE_LENGTH = 12;
     public static final int RADIX = 256;
+    public static final int EOF = 256;
     private static void compress() {
         // read in the entire text
         String text = BinaryStdIn.readString();
@@ -61,6 +62,8 @@ public class TextCompressor {
             // move to next index in the text
             index += prefix.length();
         }
+        // add end of file
+        BinaryStdOut.write(EOF, CODE_LENGTH);
         BinaryStdOut.close();
     }
 
@@ -76,7 +79,7 @@ public class TextCompressor {
         // get initial code
         int code = BinaryStdIn.readInt(CODE_LENGTH);
         // loop until no more codes to read
-        while (!BinaryStdIn.isEmpty()) {
+        while (code != EOF) {
             String prefix = prefixes[code];
             BinaryStdOut.write(prefix);
             int lookaheadCode = BinaryStdIn.readInt(CODE_LENGTH);
@@ -98,8 +101,6 @@ public class TextCompressor {
             // set current code to what was previously our lookahead code
             code = lookaheadCode;
         }
-        // write final code to expanded file
-        BinaryStdOut.write(prefixes[code]);
         BinaryStdOut.close();
     }
 
